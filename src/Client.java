@@ -6,34 +6,27 @@ import java.lang.reflect.Method;
 import java.text.NumberFormat;
 import java.util.*;
 
-public class Client extends RSApplet {	
-	
+public class Client extends RSApplet {
+
 	/**
-	 * Credits:
-	 * Lost Valentino
-	 * Poes700
-	 * Maxi
-	 * Eliminate
-	 * Zion
+	 * Credits: Lost Valentino Poes700 Maxi Eliminate Zion
 	 */
-	
+
 	/**
 	 * Enable/disable for hp/pryaer/run/xp counter/world map orbs
 	 */
-	public boolean loadOrbs = false;
-	
+	public boolean loadOrbs = true;
+
 	/**
 	 * Enable/disable for roofs
 	 */
-	public boolean roofsOff = false;
-	
+	public boolean roofsOff = true;
+
 	/**
 	 * Tweening has removed since this is a OSRS look-a-like
 	 */
 	public static boolean enableTweening = true;
-	
 
-	
 	/**
 	 * RSA keys
 	 */
@@ -42,33 +35,34 @@ public class Client extends RSApplet {
 	/**
 	 * newDamage enables or disables fake constitution.
 	 */
-	public static boolean newDamage = true;
+	public static boolean newDamage = false;
 
 	/**
-	 * npcBits can be changed to what your server's bits are set to.
-	 * This needs to be the same as serverside
+	 * npcBits can be changed to what your server's bits are set to. This needs
+	 * to be the same as serverside
 	 */
 	public static int npcBits = 12;
 
 	/**
 	 * A string which indicates the Client's name.
 	 */
-	public static String clientName = "Meralin";
+	public static String clientName = "Guthix";
 
 	/**
 	 * Client Preferences
 	 * 
-	 * hitMarks554 can be enabled or disabled between 554 and 317. 
-	 * hitBar554 can be enabled or disabled between 554 and 317. sumOrb can be changed to
+	 * hitMarks554 can be enabled or disabled between 554 and 317. hitBar554 can
+	 * be enabled or disabled between 554 and 317. sumOrb can be changed to
 	 * runEnergy can be set to true to enable run energy support.
 	 */
-	public boolean hitmarks554 = true, hpBar554 = true, runEnergy = false;
+	public boolean hitmarks554 = false, hpBar554 = false, runEnergy = true;
+
 	public enum ScreenMode {
 		FIXED,
 		RESIZABLE,
 		FULLSCREEN;
 	}
-	
+
 	public static ScreenMode frameMode = ScreenMode.FIXED;
 	public static int frameWidth = 765;
 	public static int frameHeight = 503;
@@ -80,7 +74,7 @@ public class Client extends RSApplet {
 	public static boolean changeTabArea = frameMode == ScreenMode.FIXED ? false : true;
 	public static boolean changeChatArea = frameMode == ScreenMode.FIXED ? false : true;
 	public static boolean transparentTabArea = false;
-	
+
 	public static void frameMode(ScreenMode screenMode) {
 		if (frameMode != screenMode) {
 			frameMode = screenMode;
@@ -93,7 +87,7 @@ public class Client extends RSApplet {
 				changeTabArea = false;
 			} else if (screenMode == ScreenMode.RESIZABLE) {
 				frameWidth = 766;
-				frameHeight = 529;	
+				frameHeight = 529;
 				cameraZoom = 850;
 				WorldController.viewDistance = 10;
 			} else if (screenMode == ScreenMode.FULLSCREEN) {
@@ -109,7 +103,7 @@ public class Client extends RSApplet {
 		showChatComponents = screenMode == ScreenMode.FIXED ? true : showChatComponents;
 		showTabComponents = screenMode == ScreenMode.FIXED ? true : showTabComponents;
 	}
-	
+
 	public static void rebuildFrameSize(ScreenMode screenMode, int screenWidth, int screenHeight) {
 		try {
 			screenAreaWidth = (screenMode == ScreenMode.FIXED) ? 512 : screenWidth;
@@ -122,7 +116,7 @@ public class Client extends RSApplet {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void refreshFrameSize() {
 		if (frameMode == ScreenMode.RESIZABLE) {
 			if (frameWidth != (appletClient() ? getGameComponent().getWidth() : gameFrame.getFrameWidth())) {
@@ -137,7 +131,7 @@ public class Client extends RSApplet {
 			}
 		}
 	}
-	
+
 	private static void setBounds() {
 		Texture.method365(frameWidth, frameHeight);
 		fullScreenTextureArray = Texture.anIntArray1472;
@@ -148,7 +142,7 @@ public class Client extends RSApplet {
 		Texture.method365(screenAreaWidth, screenAreaHeight);
 		anIntArray1182 = Texture.anIntArray1472;
 		int ai[] = new int[9];
-		for(int i8 = 0; i8 < 9; i8++) {
+		for (int i8 = 0; i8 < 9; i8++) {
 			int k8 = 128 + i8 * 32 + 15;
 			int l8 = 600 + k8 * 3;
 			int i9 = Texture.anIntArray1470[k8];
@@ -168,7 +162,7 @@ public class Client extends RSApplet {
 			aRSImageProducer_1165 = new ImageProducer(screenAreaWidth, screenAreaHeight);
 		}
 	}
-	
+
 	public boolean getMousePositions() {
 		if (mouseInRegion(frameWidth - (frameWidth <= 1000 ? 240 : 420), frameHeight - (frameWidth <= 1000 ? 90 : 37), frameWidth, frameHeight)) {
 			return false;
@@ -213,21 +207,21 @@ public class Client extends RSApplet {
 		}
 		return true;
 	}
-	
+
 	public boolean mouseInRegion(int x1, int y1, int x2, int y2) {
 		if (super.mouseX >= x1 && super.mouseX <= x2 && super.mouseY >= y1 && super.mouseY <= y2) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public boolean mouseMapPosition() {
 		if (super.mouseX >= frameWidth - 21 && super.mouseX <= frameWidth && super.mouseY >= 0 && super.mouseY <= 21) {
-            return false;
+			return false;
 		}
-        return true;
+		return true;
 	}
-	
+
 	private void drawLoadingMessages(int used, String s, String s1) {
 		int width = regularText.getTextWidth(used == 1 ? s : s1);
 		int height = s1 == null ? 25 : 38;
@@ -241,8 +235,6 @@ public class Client extends RSApplet {
 			regularText.drawText(0xffffff, s1, 31, width / 2 + 5);
 		}
 	}
-
-
 
 	private static String intToKOrMilLongName(int i) {
 		String s = String.valueOf(i);
@@ -298,11 +290,7 @@ public class Client extends RSApplet {
 		return k == 337;
 	}
 
-	private final int[] 
-			modeX = { 164, 230, 296, 362 }, 
-			modeNamesX = { 26, 86, 150, 212, 286, 349, 427 }, 
-			modeNamesY = { 158, 158, 153, 153, 153, 153, 158 }, 
-			channelButtonsX = { 5, 71, 137, 203, 269, 335, 404 };
+	private final int[] modeX = { 164, 230, 296, 362 }, modeNamesX = { 26, 86, 150, 212, 286, 349, 427 }, modeNamesY = { 158, 158, 153, 153, 153, 153, 158 }, channelButtonsX = { 5, 71, 137, 203, 269, 335, 404 };
 
 	private final String[] modeNames = { "All", "Game", "Public", "Private", "Clan", "Trade", "Report Abuse" };
 
@@ -358,7 +346,7 @@ public class Client extends RSApplet {
 			smallText.method382(textColor[modes[i]], modeX[i], text[modes[i]], 164 + yOffset, true);
 		}
 	}
-	
+
 	private boolean chatStateCheck() {
 		return messagePromptRaised || inputDialogState != 0 || aString844 != null || backDialogID != -1 || dialogID != -1;
 	}
@@ -387,22 +375,22 @@ public class Client extends RSApplet {
 		drawChannelButtons();
 		TextDrawingArea textDrawingArea = regularText;
 		if (messagePromptRaised) {
-             newBoldFont.drawCenteredString(aString1121, 259, 60 + yOffset, 0, -1);
-             newBoldFont.drawCenteredString(promptInput + "*", 259, 80 + yOffset, 128, -1);
+			newBoldFont.drawCenteredString(aString1121, 259, 60 + yOffset, 0, -1);
+			newBoldFont.drawCenteredString(promptInput + "*", 259, 80 + yOffset, 128, -1);
 		} else if (inputDialogState == 1) {
-             newBoldFont.drawCenteredString("Enter amount:", 259, yOffset + 60, 0, -1);
-             newBoldFont.drawCenteredString(amountOrNameInput + "*", 259, 80 + yOffset, 128, -1);
-     	} else if (inputDialogState == 2) {
-             newBoldFont.drawCenteredString("Enter Name:", 259, 60 + yOffset, 0, -1);
-             newBoldFont.drawCenteredString(amountOrNameInput + "*", 259, 80 + yOffset, 128, -1);
-     	} else if (aString844 != null) {
-             newBoldFont.drawCenteredString(aString844, 259, 60 + yOffset, 0, -1);
-             newBoldFont.drawCenteredString("Click to continue", 259, 80 + yOffset, 128, -1);
-     	} else if (backDialogID != -1) {
-             drawInterface(0, 20, RSInterface.interfaceCache[backDialogID], 20 + yOffset);
-     	} else if (dialogID != -1) {
-             drawInterface(0, 20, RSInterface.interfaceCache[dialogID], 20 + yOffset);
-     	} else if (showChatComponents) {
+			newBoldFont.drawCenteredString("Enter amount:", 259, yOffset + 60, 0, -1);
+			newBoldFont.drawCenteredString(amountOrNameInput + "*", 259, 80 + yOffset, 128, -1);
+		} else if (inputDialogState == 2) {
+			newBoldFont.drawCenteredString("Enter Name:", 259, 60 + yOffset, 0, -1);
+			newBoldFont.drawCenteredString(amountOrNameInput + "*", 259, 80 + yOffset, 128, -1);
+		} else if (aString844 != null) {
+			newBoldFont.drawCenteredString(aString844, 259, 60 + yOffset, 0, -1);
+			newBoldFont.drawCenteredString("Click to continue", 259, 80 + yOffset, 128, -1);
+		} else if (backDialogID != -1) {
+			drawInterface(0, 20, RSInterface.interfaceCache[backDialogID], 20 + yOffset);
+		} else if (dialogID != -1) {
+			drawInterface(0, 20, RSInterface.interfaceCache[dialogID], 20 + yOffset);
+		} else if (showChatComponents) {
 			int j77 = -3;
 			int j = 0;
 			int shadow = changeChatArea ? 0 : -1;
@@ -423,9 +411,22 @@ public class Client extends RSApplet {
 						s1 = s1.substring(5);
 						byte0 = 3;
 					}
+
+					// No @bla@ colors.
+					/*
+					 * if (chatType == 0) { if (chatTypeView == 5 ||
+					 * chatTypeView == 0) {
+					 * newRegularFont.drawBasicString(chatMessages[k], 11, yPos
+					 * + yOffset, changeChatArea ? 0xFFFFFF : 0, shadow); j++;
+					 * j77++; } }
+					 */
+					// @bla@ colors enabled.
 					if (chatType == 0) {
 						if (chatTypeView == 5 || chatTypeView == 0) {
-							newRegularFont.drawBasicString(chatMessages[k], 11, yPos + yOffset, changeChatArea ? 0xFFFFFF : 0, shadow);
+							if (yPos > 0 && yPos < 210)
+								textDrawingArea.method389(false, 11, 0, chatMessages[k], yPos);// chat
+																								// color
+																								// enabled
 							j++;
 							j77++;
 						}
@@ -444,8 +445,8 @@ public class Client extends RSApplet {
 								xPos += 14;
 							}
 							newRegularFont.drawBasicString(s1 + ":", xPos, yPos + yOffset, changeChatArea ? 0xFFFFFF : 0, shadow);
-                            xPos += textDrawingArea.getTextWidth(s1) + 8;
-                            newRegularFont.drawBasicString(chatMessages[k], xPos, yPos + yOffset, changeChatArea ? 0x7FA9FF : 255, shadow);
+							xPos += textDrawingArea.getTextWidth(s1) + 8;
+							newRegularFont.drawBasicString(chatMessages[k], xPos, yPos + yOffset, changeChatArea ? 0x7FA9FF : 255, shadow);
 							j++;
 							j77++;
 						}
@@ -465,49 +466,49 @@ public class Client extends RSApplet {
 								modIcons[2].drawSprite(k1, yPos - 12 + yOffset);
 								k1 += 12;
 							}
-							 newRegularFont.drawBasicString(s1 + ":", k1, yPos + yOffset, changeChatArea ? 0xFFFFFF : 0, shadow);
-                             k1 += textDrawingArea.getTextWidth(s1) + 8;
-                             newRegularFont.drawBasicString(chatMessages[k], k1, yPos + yOffset, 0x800080, shadow);
+							newRegularFont.drawBasicString(s1 + ":", k1, yPos + yOffset, changeChatArea ? 0xFFFFFF : 0, shadow);
+							k1 += textDrawingArea.getTextWidth(s1) + 8;
+							newRegularFont.drawBasicString(chatMessages[k], k1, yPos + yOffset, 0x800080, shadow);
 							j++;
 							j77++;
 						}
 					}
 					if (chatType == 4 && (tradeMode == 0 || tradeMode == 1 && isFriendOrSelf(s1))) {
 						if (chatTypeView == 3 || chatTypeView == 0) {
-								newRegularFont.drawBasicString(s1 + " " + chatMessages[k], 11, yPos + yOffset, 0x800080, shadow);
+							newRegularFont.drawBasicString(s1 + " " + chatMessages[k], 11, yPos + yOffset, 0x800080, shadow);
 							j++;
 							j77++;
 						}
 					}
 					if (chatType == 5 && splitPrivateChat == 0 && privateChatMode < 2) {
 						if (chatTypeView == 2 || chatTypeView == 0) {
-								newRegularFont.drawBasicString(s1 + " " + chatMessages[k], 11, yPos + yOffset, 0x800080, shadow);
+							newRegularFont.drawBasicString(s1 + " " + chatMessages[k], 11, yPos + yOffset, 0x800080, shadow);
 							j++;
 							j77++;
 						}
 					}
 					if (chatType == 6 && (splitPrivateChat == 0 || chatTypeView == 2) && privateChatMode < 2) {
 						if (chatTypeView == 2 || chatTypeView == 0) {
-								newRegularFont.drawBasicString("To " + s1 + ":", 11, yPos + yOffset, changeChatArea ? 0xFFFFFF : 0, shadow);
-								newRegularFont.drawBasicString(chatMessages[k], 15 + textDrawingArea.getTextWidth("To :" + s1), yPos + yOffset, 0x800080, shadow);
+							newRegularFont.drawBasicString("To " + s1 + ":", 11, yPos + yOffset, changeChatArea ? 0xFFFFFF : 0, shadow);
+							newRegularFont.drawBasicString(chatMessages[k], 15 + textDrawingArea.getTextWidth("To :" + s1), yPos + yOffset, 0x800080, shadow);
 							j++;
 							j77++;
 						}
 					}
 					if (chatType == 8 && (tradeMode == 0 || tradeMode == 1 && isFriendOrSelf(s1))) {
 						if (chatTypeView == 3 || chatTypeView == 0) {
-								newRegularFont.drawBasicString(s1 + " " + chatMessages[k], 11, yPos + yOffset, 0x7e3200, shadow);
+							newRegularFont.drawBasicString(s1 + " " + chatMessages[k], 11, yPos + yOffset, 0x7e3200, shadow);
 							j++;
 							j77++;
 						}
 						if (chatType == 11 && (clanChatMode == 0)) {
 							if (chatTypeView == 11) {
-									newRegularFont.drawBasicString(s1 + " " + chatMessages[k], 11, yPos + yOffset, 0x7e3200, shadow);
+								newRegularFont.drawBasicString(s1 + " " + chatMessages[k], 11, yPos + yOffset, 0x7e3200, shadow);
 								j++;
 								j77++;
 							}
 							if (chatType == 12) {
-									newRegularFont.drawBasicString(chatMessages[k] + "", 11, yPos + yOffset, 0x7e3200, shadow);
+								newRegularFont.drawBasicString(chatMessages[k] + "", 11, yPos + yOffset, 0x7e3200, shadow);
 								j++;
 							}
 						}
@@ -539,12 +540,12 @@ public class Client extends RSApplet {
 								j2 += clanNameWidth;
 								break;
 							}
-							newRegularFont.drawBasicString("[", 8, yPos + yOffset, changeChatArea? 0xFFFFFF : 0, shadow);
-                            newRegularFont.drawBasicString(clanname, 14, yPos + yOffset, changeChatArea ? 0x7FA9FF : 255, shadow);
-                            newRegularFont.drawBasicString("]", clanNameWidth + 14, yPos + yOffset, changeChatArea? 0xFFFFFF : 0, shadow);
-                            newRegularFont.drawBasicString(chatNames[k] + ":", j2 - 17, yPos + yOffset, changeChatArea? 0xFFFFFF : 0, shadow);
-                            j2 += textDrawingArea.getTextWidth(chatNames[k]) + 7;
-                            newRegularFont.drawBasicString(chatMessages[k], j2 - 16, yPos + yOffset, 0x800080, shadow);
+							newRegularFont.drawBasicString("[", 8, yPos + yOffset, changeChatArea ? 0xFFFFFF : 0, shadow);
+							newRegularFont.drawBasicString(clanname, 14, yPos + yOffset, changeChatArea ? 0x7FA9FF : 255, shadow);
+							newRegularFont.drawBasicString("]", clanNameWidth + 14, yPos + yOffset, changeChatArea ? 0xFFFFFF : 0, shadow);
+							newRegularFont.drawBasicString(chatNames[k] + ":", j2 - 17, yPos + yOffset, changeChatArea ? 0xFFFFFF : 0, shadow);
+							j2 += textDrawingArea.getTextWidth(chatNames[k]) + 7;
+							newRegularFont.drawBasicString(chatMessages[k], j2 - 16, yPos + yOffset, 0x800080, shadow);
 							j++;
 							j77++;
 						}
@@ -556,7 +557,7 @@ public class Client extends RSApplet {
 			if (anInt1211 < 111) {
 				anInt1211 = 111;
 			}
-			drawScrollbar(114, anInt1211 - anInt1089 - 113, 7 + yOffset, 496, anInt1211, changeChatArea);	
+			drawScrollbar(114, anInt1211 - anInt1089 - 113, 7 + yOffset, 496, anInt1211, changeChatArea);
 			String s;
 			if (myPlayer != null && myPlayer.name != null) {
 				s = myPlayer.name;
@@ -564,15 +565,15 @@ public class Client extends RSApplet {
 				s = TextClass.fixName(myUsername);
 			}
 			DrawingArea.setDrawingArea(140 + yOffset, 8, 509, 120 + yOffset);
-            int xOffset = 0;
-            if (myPrivilege > 0) {
-                modIcons[myPrivilege - 1].drawSprite(10, 122 + yOffset);
-                xOffset += 14;
-            }
-            newRegularFont.drawBasicString(s + ":", xOffset + 11, 133 + yOffset, changeChatArea ? 0xFFFFFF : 0, shadow);
-            newRegularFont.drawBasicString(inputString + "*", xOffset + 12 + textDrawingArea.getTextWidth(s + ": "), 133 + yOffset, changeChatArea ? 0x7FA9FF : 255, shadow);
-            DrawingArea.method339(121 + yOffset, changeChatArea ? 0x575757 : 0x807660, 506, 7);
-            DrawingArea.defaultDrawingAreaSize();
+			int xOffset = 0;
+			if (myPrivilege > 0) {
+				modIcons[myPrivilege - 1].drawSprite(10, 122 + yOffset);
+				xOffset += 14;
+			}
+			newRegularFont.drawBasicString(s + ":", xOffset + 11, 133 + yOffset, changeChatArea ? 0xFFFFFF : 0, shadow);
+			newRegularFont.drawBasicString(inputString + "*", xOffset + 12 + textDrawingArea.getTextWidth(s + ": "), 133 + yOffset, changeChatArea ? 0x7FA9FF : 255, shadow);
+			DrawingArea.method339(121 + yOffset, changeChatArea ? 0x575757 : 0x807660, 506, 7);
+			DrawingArea.defaultDrawingAreaSize();
 		}
 		if (menuOpen) {
 			drawMenu(0, frameMode == ScreenMode.FIXED ? 338 : 0);
@@ -924,7 +925,7 @@ public class Client extends RSApplet {
 		}
 
 	}
-	
+
 	public static AbstractMap.SimpleEntry<Integer, Integer> getNextInteger(ArrayList<Integer> values) {
 		ArrayList<AbstractMap.SimpleEntry<Integer, Integer>> frequencies = new ArrayList<>();
 		int maxIndex = 0;
@@ -1123,7 +1124,8 @@ public class Client extends RSApplet {
 					String s = class9_1.selectedActionName;
 					if (s.indexOf(" ") != -1)
 						s = s.substring(0, s.indexOf(" "));
-					if (class9_1.spellName.endsWith("Rush") || class9_1.spellName.endsWith("Burst") || class9_1.spellName.endsWith("Blitz") || class9_1.spellName.endsWith("Barrage") || class9_1.spellName.endsWith("strike") || class9_1.spellName.endsWith("bolt") || class9_1.spellName.equals("Crumble undead") || class9_1.spellName.endsWith("blast") || class9_1.spellName.endsWith("wave") || class9_1.spellName.equals("Claws of Guthix") || class9_1.spellName.equals("Flames of Zamorak") || class9_1.spellName.equals("Magic Dart")) {
+					if (class9_1.spellName.endsWith("Rush") || class9_1.spellName.endsWith("Burst") || class9_1.spellName.endsWith("Blitz") || class9_1.spellName.endsWith("Barrage") || class9_1.spellName.endsWith("strike") || class9_1.spellName.endsWith("bolt")
+							|| class9_1.spellName.equals("Crumble undead") || class9_1.spellName.endsWith("blast") || class9_1.spellName.endsWith("wave") || class9_1.spellName.equals("Claws of Guthix") || class9_1.spellName.equals("Flames of Zamorak") || class9_1.spellName.equals("Magic Dart")) {
 						menuActionName[menuActionRow] = "Autocast @gre@" + class9_1.spellName;
 						menuActionID[menuActionRow] = 104;
 						menuActionCmd3[menuActionRow] = class9_1.id;
@@ -1296,18 +1298,18 @@ public class Client extends RSApplet {
 			}
 		}
 	}
-	
+
 	public void drawTransparentScrollBar(int x, int y, int height, int maxScroll, int pos) {
 		cacheSprite[29].drawARGBSprite(x, y, 120);
 		cacheSprite[30].drawARGBSprite(x, y + height - 16, 120);
 		DrawingArea.drawVerticalLine(x, y + 16, height - 32, 0xffffff, 64);
 		DrawingArea.drawVerticalLine(x + 15, y + 16, height - 32, 0xffffff, 64);
 		int barHeight = (height - 32) * height / maxScroll;
-		if(barHeight < 10) {
+		if (barHeight < 10) {
 			barHeight = 10;
 		}
 		int barPos = 0;
-		if(maxScroll != height) {
+		if (maxScroll != height) {
 			barPos = (height - 32 - barHeight) * pos / (maxScroll - height);
 		}
 		DrawingArea.drawRectangle(x, y + 16 + barPos, 16, 5 + y + 16 + barPos + barHeight - 5 - (y + 16 + barPos), 0xffffff, 32);
@@ -1469,135 +1471,135 @@ public class Client extends RSApplet {
 
 	public void processChatModeClick() {
 		final int yOffset = frameMode == ScreenMode.FIXED ? 0 : frameHeight - 503;
-		if(super.mouseX >= 5 && super.mouseX <= 61 && super.mouseY >= yOffset + 482 && super.mouseY <= yOffset + 503) {
+		if (super.mouseX >= 5 && super.mouseX <= 61 && super.mouseY >= yOffset + 482 && super.mouseY <= yOffset + 503) {
 			cButtonHPos = 0;
 			inputTaken = true;
-		} else if(super.mouseX >= 71 && super.mouseX <= 127 && super.mouseY >= yOffset + 482 && super.mouseY <= yOffset + 503) {
+		} else if (super.mouseX >= 71 && super.mouseX <= 127 && super.mouseY >= yOffset + 482 && super.mouseY <= yOffset + 503) {
 			cButtonHPos = 1;
 			inputTaken = true;
-		} else if(super.mouseX >= 137 && super.mouseX <= 193 && super.mouseY >= yOffset + 482 && super.mouseY <= yOffset + 503) {
+		} else if (super.mouseX >= 137 && super.mouseX <= 193 && super.mouseY >= yOffset + 482 && super.mouseY <= yOffset + 503) {
 			cButtonHPos = 2;
 			inputTaken = true;
-		} else if(super.mouseX >= 203 && super.mouseX <= 259 && super.mouseY >= yOffset + 482 && super.mouseY <= yOffset + 503) {
+		} else if (super.mouseX >= 203 && super.mouseX <= 259 && super.mouseY >= yOffset + 482 && super.mouseY <= yOffset + 503) {
 			cButtonHPos = 3;
 			inputTaken = true;
-		} else if(super.mouseX >= 269 && super.mouseX <= 325 && super.mouseY >= yOffset + 482 && super.mouseY <= yOffset + 503) {
+		} else if (super.mouseX >= 269 && super.mouseX <= 325 && super.mouseY >= yOffset + 482 && super.mouseY <= yOffset + 503) {
 			cButtonHPos = 4;
 			inputTaken = true;
-		} else if(super.mouseX >= 335 && super.mouseX <= 391 && super.mouseY >= yOffset + 482 && super.mouseY <= yOffset + 503) {
+		} else if (super.mouseX >= 335 && super.mouseX <= 391 && super.mouseY >= yOffset + 482 && super.mouseY <= yOffset + 503) {
 			cButtonHPos = 5;
 			inputTaken = true;
-		} else if(super.mouseX >= 404 && super.mouseX <= 515 && super.mouseY >= yOffset + 482 && super.mouseY <= yOffset + 503) {
+		} else if (super.mouseX >= 404 && super.mouseX <= 515 && super.mouseY >= yOffset + 482 && super.mouseY <= yOffset + 503) {
 			cButtonHPos = 6;
 			inputTaken = true;
 		} else {
 			cButtonHPos = -1;
 			inputTaken = true;
 		}
-		if(super.clickMode3 == 1) {
-			if(super.saveClickX >= 5 && super.saveClickX <= 61 && super.saveClickY >= yOffset + 482 && super.saveClickY <= yOffset + 505) {
+		if (super.clickMode3 == 1) {
+			if (super.saveClickX >= 5 && super.saveClickX <= 61 && super.saveClickY >= yOffset + 482 && super.saveClickY <= yOffset + 505) {
 				if (frameMode != ScreenMode.FIXED) {
-                    if (setChannel != 0) {
-                        cButtonCPos = 0;
-                        chatTypeView = 0;
-                        inputTaken = true;
-                        setChannel = 0;
-                    } else {
-                    	showChatComponents = showChatComponents ? false : true;
-                    }
-                } else {
-                    cButtonCPos = 0;
-                    chatTypeView = 0;
-                    inputTaken = true;
-                    setChannel = 0;
-                }
-			} else if(super.saveClickX >= 71 && super.saveClickX <= 127 && super.saveClickY >= yOffset + 482 && super.saveClickY <= yOffset + 505) {
+					if (setChannel != 0) {
+						cButtonCPos = 0;
+						chatTypeView = 0;
+						inputTaken = true;
+						setChannel = 0;
+					} else {
+						showChatComponents = showChatComponents ? false : true;
+					}
+				} else {
+					cButtonCPos = 0;
+					chatTypeView = 0;
+					inputTaken = true;
+					setChannel = 0;
+				}
+			} else if (super.saveClickX >= 71 && super.saveClickX <= 127 && super.saveClickY >= yOffset + 482 && super.saveClickY <= yOffset + 505) {
 				if (frameMode != ScreenMode.FIXED) {
-                    if (setChannel != 1 && frameMode != ScreenMode.FIXED) {
-                        cButtonCPos = 1;
-                        chatTypeView = 5;
-                        inputTaken = true;
-                        setChannel = 1;
-                    } else {
-                    	showChatComponents = showChatComponents ? false : true;
-                    }
-                } else {
-                    cButtonCPos = 1;
-                    chatTypeView = 5;
-                    inputTaken = true;
-                    setChannel = 1;
-                }
-			} else if(super.saveClickX >= 137 && super.saveClickX <= 193 && super.saveClickY >= yOffset + 482 && super.saveClickY <= yOffset + 505) {
+					if (setChannel != 1 && frameMode != ScreenMode.FIXED) {
+						cButtonCPos = 1;
+						chatTypeView = 5;
+						inputTaken = true;
+						setChannel = 1;
+					} else {
+						showChatComponents = showChatComponents ? false : true;
+					}
+				} else {
+					cButtonCPos = 1;
+					chatTypeView = 5;
+					inputTaken = true;
+					setChannel = 1;
+				}
+			} else if (super.saveClickX >= 137 && super.saveClickX <= 193 && super.saveClickY >= yOffset + 482 && super.saveClickY <= yOffset + 505) {
 				if (frameMode != ScreenMode.FIXED) {
-                    if (setChannel != 2 && frameMode != ScreenMode.FIXED) {
-                        cButtonCPos = 2;
-                        chatTypeView = 1;
-                        inputTaken = true;
-                        setChannel = 2;
-                    } else {
-                    	showChatComponents = showChatComponents ? false : true;
-                    }
-                } else {
-                    cButtonCPos = 2;
-                    chatTypeView = 1;
-                    inputTaken = true;
-                    setChannel = 2;
-                }
-			} else if(super.saveClickX >= 203 && super.saveClickX <= 259 && super.saveClickY >= yOffset + 482 && super.saveClickY <= yOffset + 505) {
+					if (setChannel != 2 && frameMode != ScreenMode.FIXED) {
+						cButtonCPos = 2;
+						chatTypeView = 1;
+						inputTaken = true;
+						setChannel = 2;
+					} else {
+						showChatComponents = showChatComponents ? false : true;
+					}
+				} else {
+					cButtonCPos = 2;
+					chatTypeView = 1;
+					inputTaken = true;
+					setChannel = 2;
+				}
+			} else if (super.saveClickX >= 203 && super.saveClickX <= 259 && super.saveClickY >= yOffset + 482 && super.saveClickY <= yOffset + 505) {
 				if (frameMode != ScreenMode.FIXED) {
-                    if (setChannel != 3 && frameMode != ScreenMode.FIXED) {
-                        cButtonCPos = 3;
-                        chatTypeView = 2;
-                        inputTaken = true;
-                        setChannel = 3;
-                    } else {
-                    	showChatComponents = showChatComponents ? false : true;
-                    }
-                } else {
-                    cButtonCPos = 3;
-                    chatTypeView = 2;
-                    inputTaken = true;
-                    setChannel = 3;
-                }
-			} else if(super.saveClickX >= 269 && super.saveClickX <= 325 && super.saveClickY >= yOffset + 482 && super.saveClickY <= yOffset + 505) {
+					if (setChannel != 3 && frameMode != ScreenMode.FIXED) {
+						cButtonCPos = 3;
+						chatTypeView = 2;
+						inputTaken = true;
+						setChannel = 3;
+					} else {
+						showChatComponents = showChatComponents ? false : true;
+					}
+				} else {
+					cButtonCPos = 3;
+					chatTypeView = 2;
+					inputTaken = true;
+					setChannel = 3;
+				}
+			} else if (super.saveClickX >= 269 && super.saveClickX <= 325 && super.saveClickY >= yOffset + 482 && super.saveClickY <= yOffset + 505) {
 				if (frameMode != ScreenMode.FIXED) {
-                    if (setChannel != 4 && frameMode != ScreenMode.FIXED) {
-                        cButtonCPos = 4;
-                        chatTypeView = 11;
-                        inputTaken = true;
-                        setChannel = 4;
-                    } else {
-                    	showChatComponents = showChatComponents ? false : true;
-                    }
-                } else {
-                    cButtonCPos = 4;
-                    chatTypeView = 11;
-                    inputTaken = true;
-                    setChannel = 4;
-                }
-			} else if(super.saveClickX >= 335 && super.saveClickX <= 391 && super.saveClickY >= yOffset + 482 && super.saveClickY <= yOffset + 505) {
+					if (setChannel != 4 && frameMode != ScreenMode.FIXED) {
+						cButtonCPos = 4;
+						chatTypeView = 11;
+						inputTaken = true;
+						setChannel = 4;
+					} else {
+						showChatComponents = showChatComponents ? false : true;
+					}
+				} else {
+					cButtonCPos = 4;
+					chatTypeView = 11;
+					inputTaken = true;
+					setChannel = 4;
+				}
+			} else if (super.saveClickX >= 335 && super.saveClickX <= 391 && super.saveClickY >= yOffset + 482 && super.saveClickY <= yOffset + 505) {
 				if (frameMode != ScreenMode.FIXED) {
-                    if (setChannel != 5 && frameMode != ScreenMode.FIXED) {
-                        cButtonCPos = 5;
-                        chatTypeView = 3;
-                        inputTaken = true;
-                        setChannel = 5;
-                    } else {
-                        showChatComponents = showChatComponents ? false : true;
-                    }
-                } else {
-                    cButtonCPos = 5;
-                    chatTypeView = 3;
-                    inputTaken = true;
-                    setChannel = 5;
-                }
-			} else if(super.saveClickX >= 404 && super.saveClickX <= 515 && super.saveClickY >= yOffset + 482 && super.saveClickY <= yOffset + 505) {
-				if(openInterfaceID == -1) {
+					if (setChannel != 5 && frameMode != ScreenMode.FIXED) {
+						cButtonCPos = 5;
+						chatTypeView = 3;
+						inputTaken = true;
+						setChannel = 5;
+					} else {
+						showChatComponents = showChatComponents ? false : true;
+					}
+				} else {
+					cButtonCPos = 5;
+					chatTypeView = 3;
+					inputTaken = true;
+					setChannel = 5;
+				}
+			} else if (super.saveClickX >= 404 && super.saveClickX <= 515 && super.saveClickY >= yOffset + 482 && super.saveClickY <= yOffset + 505) {
+				if (openInterfaceID == -1) {
 					clearTopInterfaces();
 					reportAbuseInput = "";
 					canMute = false;
-					for(int i = 0; i < RSInterface.interfaceCache.length; i++) {
-						if(RSInterface.interfaceCache[i] == null || RSInterface.interfaceCache[i].contentType != 600) {
+					for (int i = 0; i < RSInterface.interfaceCache.length; i++) {
+						if (RSInterface.interfaceCache[i] == null || RSInterface.interfaceCache[i].contentType != 600) {
 							continue;
 						}
 						reportAbuseInterfaceID = openInterfaceID = RSInterface.interfaceCache[i].parentID;
@@ -1611,6 +1613,10 @@ public class Client extends RSApplet {
 	}
 
 	private void method33(int i) {
+		// Load orbs toggle.
+		if (i == 306) {
+			loadOrbs = !loadOrbs;
+		}
 		try {
 			int j = Varp.cache[i].anInt709;
 			if (j == 0)
@@ -1975,11 +1981,8 @@ public class Client extends RSApplet {
 		}
 	}
 
-	private final int[] 
-		sideIconsX = { 17, 49, 83, 114, 146, 180, 214, 16, 49, 82, 116, 148, 184, 216 }, 
-		sideIconsY = { 9, 7, 7, 5, 2, 3, 7, 303, 306, 306, 302, 305, 303, 303, 303 }, 
-		sideIconsId = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 }, 
-		sideIconsTab = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+	private final int[] sideIconsX = { 17, 49, 83, 114, 146, 180, 214, 16, 49, 82, 116, 148, 184, 216 }, sideIconsY = { 9, 7, 7, 5, 2, 3, 7, 303, 306, 306, 302, 305, 303, 303, 303 }, sideIconsId = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },
+			sideIconsTab = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
 
 	public void drawSideIcons() {
 		int xOffset = frameMode == ScreenMode.FIXED ? 0 : frameWidth - 247;
@@ -1994,7 +1997,7 @@ public class Client extends RSApplet {
 			}
 		} else if (changeTabArea && frameWidth < 1000) {
 			int[] iconId = { 0, 1, 2, 3, 4, 5, 6, -1, 8, 9, 7, 11, 12, 13 };
-			int[] iconX = { 219, 189, 156, 126, 93, 62, 30, 219, 189, 156, 124, 92, 59, 28};
+			int[] iconX = { 219, 189, 156, 126, 93, 62, 30, 219, 189, 156, 124, 92, 59, 28 };
 			int[] iconY = { 67, 69, 67, 69, 72, 72, 69, 32, 29, 29, 32, 30, 33, 31, 32 };
 			for (int i = 0; i < sideIconsTab.length; i++) {
 				if (tabInterfaceIDs[sideIconsTab[i]] != -1) {
@@ -2005,7 +2008,7 @@ public class Client extends RSApplet {
 			}
 		} else if (changeTabArea && frameWidth >= 1000) {
 			int[] iconId = { 0, 1, 2, 3, 4, 5, 6, -1, 8, 9, 7, 11, 12, 13 };
-			int[] iconX = { 50, 80, 114, 143, 176, 208, 240, 242, 273, 306, 338, 370, 404, 433};
+			int[] iconX = { 50, 80, 114, 143, 176, 208, 240, 242, 273, 306, 338, 370, 404, 433 };
 			int[] iconY = { 30, 32, 30, 32, 34, 34, 32, 32, 29, 29, 32, 31, 32, 32, 32 };
 			for (int i = 0; i < sideIconsTab.length; i++) {
 				if (tabInterfaceIDs[sideIconsTab[i]] != -1) {
@@ -2017,10 +2020,7 @@ public class Client extends RSApplet {
 		}
 	}
 
-	private final int[] 
-		redStonesX = { 6, 44, 77, 110, 143, 176, 209, 6, 44, 77, 110, 143, 176, 209 }, 
-		redStonesY = { 0, 0, 0, 0, 0, 0, 0, 298, 298, 298, 298, 298, 298, 298 }, 
-		redStonesId = { 35, 39, 39, 39, 39, 39, 36, 37, 39, 39, 39, 39, 39, 38 };
+	private final int[] redStonesX = { 6, 44, 77, 110, 143, 176, 209, 6, 44, 77, 110, 143, 176, 209 }, redStonesY = { 0, 0, 0, 0, 0, 0, 0, 298, 298, 298, 298, 298, 298, 298 }, redStonesId = { 35, 39, 39, 39, 39, 39, 36, 37, 39, 39, 39, 39, 39, 38 };
 
 	private void drawRedStones() {
 		int xOffset = frameMode == ScreenMode.FIXED ? 0 : frameWidth - 247;
@@ -2030,7 +2030,7 @@ public class Client extends RSApplet {
 				cacheSprite[redStonesId[tabID]].drawSprite(redStonesX[tabID] + xOffset, redStonesY[tabID] + yOffset);
 			}
 		} else if (changeTabArea && frameWidth < 1000) {
-			int[] stoneX = { 226, 194, 162, 130, 99, 65, 34, 219, 195, 161, 130, 98, 65, 33};
+			int[] stoneX = { 226, 194, 162, 130, 99, 65, 34, 219, 195, 161, 130, 98, 65, 33 };
 			int[] stoneY = { 73, 73, 73, 73, 73, 73, 73, -1, 37, 37, 37, 37, 37, 37, 37 };
 			if (tabInterfaceIDs[tabID] != -1 && tabID != 10 && showTabComponents) {
 				if (tabID == 7) {
@@ -2039,7 +2039,7 @@ public class Client extends RSApplet {
 				cacheSprite[39].drawSprite(frameWidth - stoneX[tabID], frameHeight - stoneY[tabID]);
 			}
 		} else if (changeTabArea && frameWidth >= 1000) {
-			int[] stoneX = { 417, 385, 353, 321, 289, 256, 224, 129, 193, 161, 130, 98, 65, 33};
+			int[] stoneX = { 417, 385, 353, 321, 289, 256, 224, 129, 193, 161, 130, 98, 65, 33 };
 			if (tabInterfaceIDs[tabID] != -1 && tabID != 10 && showTabComponents) {
 				cacheSprite[39].drawSprite(frameWidth - stoneX[tabID], frameHeight - 37);
 			}
@@ -2055,7 +2055,7 @@ public class Client extends RSApplet {
 		Texture.anIntArray1472 = anIntArray1181;
 		if (frameMode == ScreenMode.FIXED) {
 			cacheSprite[21].drawSprite(0, 0);
-		} else if (frameMode != ScreenMode.FIXED && !changeTabArea){
+		} else if (frameMode != ScreenMode.FIXED && !changeTabArea) {
 			DrawingArea.method335(0x3E3529, frameHeight - 304, 195, 270, transparentTabArea ? 80 : 256, frameWidth - 217);
 			cacheSprite[47].drawSprite(xOffset, yOffset);
 		} else {
@@ -2952,15 +2952,12 @@ public class Client extends RSApplet {
 		int ai[] = new int[sprite.myWidth];
 		for (int j = 0; j < sprite.myHeight; j++) {
 			for (int k = 0; k < sprite.myWidth; k++)
-				ai[k] = sprite.myPixels[(sprite.myWidth - k - 1)
-						+ sprite.myWidth * j];
+				ai[k] = sprite.myPixels[(sprite.myWidth - k - 1) + sprite.myWidth * j];
 
-			System.arraycopy(ai, 0, sprite.myPixels, sprite.myWidth * j,
-					sprite.myWidth);
+			System.arraycopy(ai, 0, sprite.myPixels, sprite.myWidth * j, sprite.myWidth);
 		}
 
 	}
-	
 
 	private void processOnDemandQueue() {
 		do {
@@ -3637,11 +3634,14 @@ public class Client extends RSApplet {
 		int k = menuActionCmd3[i];
 		int l = menuActionID[i];
 		int i1 = menuActionCmd1[i];
+		if (Configuration.DEBUG) {
+			System.out.println("childId: " + l);
+		}
 		if (l >= 2000)
 			l -= 2000;
 		if (l == 851) {
 			stream.createFrame(185);
-			stream.writeWord(155);	
+			stream.writeWord(155);
 		}
 		if (l == 474) {
 			counterOn = !counterOn;
@@ -4517,6 +4517,7 @@ public class Client extends RSApplet {
 			stream.createFrame(185);
 			stream.writeWord(k);
 			RSInterface class9_3 = RSInterface.interfaceCache[k];
+
 			if (class9_3.valueIndexArray != null && class9_3.valueIndexArray[0][0] == 5) {
 				int l2 = class9_3.valueIndexArray[0][1];
 				variousSettings[l2] = 1 - variousSettings[l2];
@@ -5007,34 +5008,34 @@ public class Client extends RSApplet {
 							fpsOn = true;
 						if (inputString.equals("::fpsoff"))
 							fpsOn = false;
-						if(inputString.equals("::fixed")) {
+						if (inputString.equals("::fixed")) {
 							frameMode(ScreenMode.FIXED);
 						}
-						if(inputString.equals("::resize")) {
+						if (inputString.equals("::resize")) {
 							frameMode(ScreenMode.RESIZABLE);
 						}
-						if(inputString.equals("::full")) {
+						if (inputString.equals("::full")) {
 							frameMode(ScreenMode.FULLSCREEN);
 						}
-						if(inputString.equals("::width")) {
+						if (inputString.equals("::width")) {
 							System.out.println(frameWidth);
 						}
-						if(inputString.equals("::chat")) {
+						if (inputString.equals("::chat")) {
 							if (frameMode != ScreenMode.FIXED) {
-								changeChatArea =! changeChatArea;
+								changeChatArea = !changeChatArea;
 							}
 						}
-						if(inputString.equals("::tab")) {
+						if (inputString.equals("::tab")) {
 							if (frameMode != ScreenMode.FIXED) {
-								changeTabArea =! changeTabArea;
+								changeTabArea = !changeTabArea;
 							}
 						}
-						if(inputString.equals("::optab")) {
+						if (inputString.equals("::optab")) {
 							if (frameMode != ScreenMode.FIXED) {
-								transparentTabArea =! transparentTabArea;
+								transparentTabArea = !transparentTabArea;
 							}
 						}
-						if(inputString.equals("::height")) {
+						if (inputString.equals("::height")) {
 							System.out.println(frameHeight);
 						}
 						if (inputString.equals("::dataon"))
@@ -5731,7 +5732,7 @@ public class Client extends RSApplet {
 	}
 
 	private final void minimapHovers() {
- 		final boolean fixed = frameMode == ScreenMode.FIXED;
+		final boolean fixed = frameMode == ScreenMode.FIXED;
 		hpHover = fixed ? super.mouseX >= 690 && super.mouseX <= 745 && super.mouseY >= 13 && super.mouseY < 47 : super.mouseX >= frameWidth - 216 && super.mouseX <= 159 && super.mouseY >= 13 && super.mouseY < 47;
 		prayHover = fixed ? super.mouseX >= 525 && super.mouseX <= 581 && super.mouseY >= 105 && super.mouseY < 139 : super.mouseX >= frameWidth - 207 && super.mouseX <= frameWidth - 151 && super.mouseY >= 105 && super.mouseY < 139;
 		runHover = fixed ? super.mouseX >= 558 && super.mouseX <= 613 && super.mouseY >= 132 && super.mouseY < 165 : super.mouseX >= frameWidth - 174 && super.mouseX <= frameWidth - 120 && super.mouseY >= 132 && super.mouseY < 165;
@@ -5740,10 +5741,7 @@ public class Client extends RSApplet {
 		specialHover = fixed ? super.mouseX >= 670 && super.mouseX <= 727 && super.mouseY >= 133 && super.mouseY <= 164 : super.mouseX >= frameWidth - 62 && super.mouseX <= frameWidth - 5 && super.mouseY >= 151 && super.mouseY <= 184;
 	}
 
-	private final int[] 
-		tabClickX = { 38, 33, 33, 33, 33, 33, 38, 38, 33, 33, 33, 33, 33, 38 }, 
-		tabClickStart = { 522, 560, 593, 625, 659, 692, 724, 522, 560, 593, 625, 659, 692, 724 }, 
-		tabClickY = { 169, 169, 169, 169, 169, 169, 169, 466, 466, 466, 466, 466, 466, 466 };
+	private final int[] tabClickX = { 38, 33, 33, 33, 33, 33, 38, 38, 33, 33, 33, 33, 33, 38 }, tabClickStart = { 522, 560, 593, 625, 659, 692, 724, 522, 560, 593, 625, 659, 692, 724 }, tabClickY = { 169, 169, 169, 169, 169, 169, 169, 466, 466, 466, 466, 466, 466, 466 };
 
 	private void processTabClick() {
 		if (super.clickMode3 == 1) {
@@ -5828,7 +5826,7 @@ public class Client extends RSApplet {
 					tabAreaAltered = true;
 
 				}
-				
+
 				if (super.saveClickX >= frameWidth - 194 && super.saveClickX <= frameWidth - 163 && super.saveClickY >= frameHeight - 37 && super.saveClickY < frameHeight - 0 && tabInterfaceIDs[8] != -1) {
 					if (tabID == 8) {
 						showTabComponents = !showTabComponents;
@@ -6123,7 +6121,7 @@ public class Client extends RSApplet {
 		}
 		anInt886 = 0;
 		anInt1315 = 0;
-		if (frameMode == ScreenMode.FIXED ) {
+		if (frameMode == ScreenMode.FIXED) {
 			if (super.mouseX > 4 && super.mouseY > 4 && super.mouseX < 516 && super.mouseY < 338) {
 				if (openInterfaceID != -1) {
 					buildInterfaceMenu(4, RSInterface.interfaceCache[openInterfaceID], super.mouseX, 4, super.mouseY, 0);
@@ -6131,11 +6129,11 @@ public class Client extends RSApplet {
 					build3dScreenMenu();
 				}
 			}
-		} else if (frameMode != ScreenMode.FIXED ) {
+		} else if (frameMode != ScreenMode.FIXED) {
 			if (getMousePositions()) {
 				if (super.mouseX > (frameWidth / 2) - 356 && super.mouseY > (frameHeight / 2) - 230 && super.mouseX < ((frameWidth / 2) + 356) && super.mouseY < (frameHeight / 2) + 230 && openInterfaceID != -1) {
 					buildInterfaceMenu((frameWidth / 2) - 356, RSInterface.interfaceCache[openInterfaceID], super.mouseX, (frameHeight / 2) - 230, super.mouseY, 0);
-			} else {
+				} else {
 					build3dScreenMenu();
 				}
 			}
@@ -6151,22 +6149,22 @@ public class Client extends RSApplet {
 		if (!changeTabArea) {
 			final int yOffset = frameMode == ScreenMode.FIXED ? 0 : frameHeight - 503;
 			final int xOffset = frameMode == ScreenMode.FIXED ? 0 : frameWidth - 765;
-			if(super.mouseX > 548 + xOffset && super.mouseX < 740 + xOffset && super.mouseY > 207 + yOffset && super.mouseY < 468 + yOffset) {
-				if(invOverlayInterfaceID != -1) {
+			if (super.mouseX > 548 + xOffset && super.mouseX < 740 + xOffset && super.mouseY > 207 + yOffset && super.mouseY < 468 + yOffset) {
+				if (invOverlayInterfaceID != -1) {
 					buildInterfaceMenu(548 + xOffset, RSInterface.interfaceCache[invOverlayInterfaceID], super.mouseX, 207 + yOffset, super.mouseY, 0);
-				} else if(tabInterfaceIDs[tabID] != -1) {
+				} else if (tabInterfaceIDs[tabID] != -1) {
 					buildInterfaceMenu(548 + xOffset, RSInterface.interfaceCache[tabInterfaceIDs[tabID]], super.mouseX, 207 + yOffset, super.mouseY, 0);
 				}
-			}	
+			}
 		} else if (changeTabArea) {
 			final int yOffset = frameWidth >= 1000 ? 37 : 74;
 			if (super.mouseX > frameWidth - 197 && super.mouseY > frameHeight - yOffset - 267 && super.mouseX < frameWidth - 7 && super.mouseY < frameHeight - yOffset - 7 && showTabComponents) {
-       		 	if (invOverlayInterfaceID != -1) {
-                    buildInterfaceMenu(frameWidth - 197, RSInterface.interfaceCache[invOverlayInterfaceID], super.mouseX, frameHeight - yOffset - 267, super.mouseY, 0);
-                } else if (tabInterfaceIDs[tabID] != -1) {
-                    buildInterfaceMenu(frameWidth - 197, RSInterface.interfaceCache[tabInterfaceIDs[tabID]], super.mouseX, frameHeight - yOffset - 267, super.mouseY, 0);
-                }
-            }
+				if (invOverlayInterfaceID != -1) {
+					buildInterfaceMenu(frameWidth - 197, RSInterface.interfaceCache[invOverlayInterfaceID], super.mouseX, frameHeight - yOffset - 267, super.mouseY, 0);
+				} else if (tabInterfaceIDs[tabID] != -1) {
+					buildInterfaceMenu(frameWidth - 197, RSInterface.interfaceCache[tabInterfaceIDs[tabID]], super.mouseX, frameHeight - yOffset - 267, super.mouseY, 0);
+				}
+			}
 		}
 		if (anInt886 != anInt1048) {
 			tabAreaAltered = true;
@@ -6193,7 +6191,7 @@ public class Client extends RSApplet {
 			inputTaken = true;
 			anInt1500 = anInt1315;
 		}
-		if(super.mouseX > 4 && super.mouseY > 480 && super.mouseX < 516 && super.mouseY < frameHeight) {
+		if (super.mouseX > 4 && super.mouseY > 480 && super.mouseX < 516 && super.mouseY < frameHeight) {
 			rightClickChatButtons();
 		}
 		processMinimapActions();
@@ -6520,7 +6518,6 @@ public class Client extends RSApplet {
 		loginMessage2 = "Error connecting to server.";
 	}
 
-	
 	private void loginOld(String s, String s1, boolean flag) {
 		Signlink.errorname = s;
 		try {
@@ -7274,9 +7271,9 @@ public class Client extends RSApplet {
 			regularText = new TextDrawingArea(false, "p12_full", titleStreamLoader);
 			boldText = new TextDrawingArea(false, "b12_full", titleStreamLoader);
 			newSmallFont = new RSFont(false, "p11_full", titleStreamLoader);
-            newRegularFont = new RSFont(false, "p12_full", titleStreamLoader);
-            newBoldFont = new RSFont(false, "b12_full", titleStreamLoader);
-            newFancyFont = new RSFont(true, "q8_full", titleStreamLoader);
+			newRegularFont = new RSFont(false, "p12_full", titleStreamLoader);
+			newBoldFont = new RSFont(false, "b12_full", titleStreamLoader);
+			newFancyFont = new RSFont(true, "q8_full", titleStreamLoader);
 			TextDrawingArea aTextDrawingArea_1273 = new TextDrawingArea(true, "q8_full", titleStreamLoader);
 			drawLogo();
 			loadTitleScreen();
@@ -7304,8 +7301,8 @@ public class Client extends RSApplet {
 			File[] file = new File(Signlink.findcachedir() + "/sprites/sprites/").listFiles();
 			int size = file.length;
 			cacheSprite = new Sprite[size];
-			System.out.println("Images Loaded: "+size);
-			for (int i = 0; i < size; i ++) {
+			System.out.println("Images Loaded: " + size);
+			for (int i = 0; i < size; i++) {
 				cacheSprite[i] = new Sprite("Sprites/" + i);
 			}
 			multiOverlay = new Sprite(streamLoader_2, "overlay_multiway", 0);
@@ -7872,7 +7869,7 @@ public class Client extends RSApplet {
 	public void method101(Entity entity) {
 		entity.aBoolean1541 = false;
 		if (entity.anInt1517 > Animation.anims.length)
-			    entity.anInt1517 = -1;
+			entity.anInt1517 = -1;
 		if (entity.anInt1517 != -1) {
 			Animation animation = Animation.anims[entity.anInt1517];
 			entity.anInt1519++;
@@ -7984,18 +7981,18 @@ public class Client extends RSApplet {
 			method119(anInt945, invOverlayInterfaceID);
 		}
 		drawTabArea();
-		if(backDialogID == -1) {
+		if (backDialogID == -1) {
 			aClass9_1059.scrollPosition = anInt1211 - anInt1089 - 110;
-			if(super.mouseX >= 496 && super.mouseX <= 511 && super.mouseY > (frameMode == ScreenMode.FIXED ? 345 : frameHeight - 158))
+			if (super.mouseX >= 496 && super.mouseX <= 511 && super.mouseY > (frameMode == ScreenMode.FIXED ? 345 : frameHeight - 158))
 				method65(494, 110, super.mouseX, super.mouseY - (frameMode == ScreenMode.FIXED ? 345 : frameHeight - 158), aClass9_1059, 0, false, anInt1211);
 			int i = anInt1211 - 110 - aClass9_1059.scrollPosition;
-			if(i < 0) {
+			if (i < 0) {
 				i = 0;
 			}
-			if(i > anInt1211 - 110) {
+			if (i > anInt1211 - 110) {
 				i = anInt1211 - 110;
 			}
-			if(anInt1089 != i) {
+			if (anInt1089 != i) {
 				anInt1089 = i;
 				inputTaken = true;
 			}
@@ -8119,9 +8116,10 @@ public class Client extends RSApplet {
 			if (class9_1.contentType > 0)
 				drawFriendsListOrWelcomeScreen(class9_1);
 			// here
-			int[] IDs = { 1196, 1199, 1206, 1215, 1224, 1231, 1240, 1249, 1258, 1267, 1274, 1283, 1573, 1290, 1299, 1308, 1315, 1324, 1333, 1340, 1349, 1358, 1367, 1374, 1381, 1388, 1397, 1404, 1583, 12038, 1414, 1421, 1430, 1437, 1446, 1453, 1460, 1469, 15878, 1602, 1613, 1624, 7456, 1478, 1485, 1494, 1503, 1512, 1521, 1530, 1544, 1553, 1563, 1593, 1635, 12426, 12436, 12446, 12456, 6004, 18471,
-			/* Ancients */
-			12940, 12988, 13036, 12902, 12862, 13046, 12964, 13012, 13054, 12920, 12882, 13062, 12952, 13000, 13070, 12912, 12872, 13080, 12976, 13024, 13088, 12930, 12892, 13096 };
+			int[] IDs = { 1196, 1199, 1206, 1215, 1224, 1231, 1240, 1249, 1258, 1267, 1274, 1283, 1573, 1290, 1299, 1308, 1315, 1324, 1333, 1340, 1349, 1358, 1367, 1374, 1381, 1388, 1397, 1404, 1583, 12038, 1414, 1421, 1430, 1437, 1446, 1453, 1460, 1469, 15878, 1602, 1613, 1624, 7456, 1478, 1485,
+					1494, 1503, 1512, 1521, 1530, 1544, 1553, 1563, 1593, 1635, 12426, 12436, 12446, 12456, 6004, 18471,
+					/* Ancients */
+					12940, 12988, 13036, 12902, 12862, 13046, 12964, 13012, 13054, 12920, 12882, 13062, 12952, 13000, 13070, 12912, 12872, 13080, 12976, 13024, 13088, 12930, 12892, 13096 };
 			for (int m5 = 0; m5 < IDs.length; m5++) {
 				if (class9_1.id == IDs[m5] + 1) {
 					if (m5 > 61)
@@ -8130,8 +8128,10 @@ public class Client extends RSApplet {
 						drawBlackBox(k2, l2 + 1);
 				}
 			}
-			int[] runeChildren = { 1202, 1203, 1209, 1210, 1211, 1218, 1219, 1220, 1227, 1228, 1234, 1235, 1236, 1243, 1244, 1245, 1252, 1253, 1254, 1261, 1262, 1263, 1270, 1271, 1277, 1278, 1279, 1286, 1287, 1293, 1294, 1295, 1302, 1303, 1304, 1311, 1312, 1318, 1319, 1320, 1327, 1328, 1329, 1336, 1337, 1343, 1344, 1345, 1352, 1353, 1354, 1361, 1362, 1363, 1370, 1371, 1377, 1378, 1384, 1385, 1391, 1392, 1393, 1400, 1401, 1407, 1408, 1410, 1417, 1418, 1424, 1425, 1426, 1433, 1434, 1440, 1441, 1442, 1449, 1450, 1456, 1457, 1463, 1464, 1465, 1472, 1473, 1474, 1481, 1482, 1488, 1489, 1490, 1497, 1498, 1499, 1506, 1507, 1508, 1515, 1516, 1517, 1524, 1525, 1526, 1533, 1534, 1535, 1547, 1548, 1549, 1556, 1557, 1558, 1566, 1567, 1568, 1576, 1577, 1578, 1586, 1587, 1588, 1596, 1597, 1598, 1605, 1606, 1607, 1616, 1617, 1618, 1627, 1628, 1629, 1638, 1639, 1640, 6007, 6008, 6011, 8673, 8674, 12041, 12042, 12429, 12430, 12431, 12439, 12440, 12441, 12449, 12450, 12451, 12459, 12460, 15881, 15882,
-					15885, 18474, 18475, 18478 };
+			int[] runeChildren = { 1202, 1203, 1209, 1210, 1211, 1218, 1219, 1220, 1227, 1228, 1234, 1235, 1236, 1243, 1244, 1245, 1252, 1253, 1254, 1261, 1262, 1263, 1270, 1271, 1277, 1278, 1279, 1286, 1287, 1293, 1294, 1295, 1302, 1303, 1304, 1311, 1312, 1318, 1319, 1320, 1327, 1328, 1329, 1336,
+					1337, 1343, 1344, 1345, 1352, 1353, 1354, 1361, 1362, 1363, 1370, 1371, 1377, 1378, 1384, 1385, 1391, 1392, 1393, 1400, 1401, 1407, 1408, 1410, 1417, 1418, 1424, 1425, 1426, 1433, 1434, 1440, 1441, 1442, 1449, 1450, 1456, 1457, 1463, 1464, 1465, 1472, 1473, 1474, 1481, 1482,
+					1488, 1489, 1490, 1497, 1498, 1499, 1506, 1507, 1508, 1515, 1516, 1517, 1524, 1525, 1526, 1533, 1534, 1535, 1547, 1548, 1549, 1556, 1557, 1558, 1566, 1567, 1568, 1576, 1577, 1578, 1586, 1587, 1588, 1596, 1597, 1598, 1605, 1606, 1607, 1616, 1617, 1618, 1627, 1628, 1629, 1638,
+					1639, 1640, 6007, 6008, 6011, 8673, 8674, 12041, 12042, 12429, 12430, 12431, 12439, 12440, 12441, 12449, 12450, 12451, 12459, 12460, 15881, 15882, 15885, 18474, 18475, 18478 };
 			for (int r = 0; r < runeChildren.length; r++)
 				if (class9_1.id == runeChildren[r])
 					class9_1.modelZoom = 775;
@@ -8356,8 +8356,8 @@ public class Client extends RSApplet {
 								sprite.drawSprite(k2, l2);
 							}
 					}
-					if(autocast && class9_1.id == autoCastId)
-						cacheSprite[43].drawSprite(k2-3, l2-3);
+					if (autocast && class9_1.id == autoCastId)
+						cacheSprite[43].drawSprite(k2 - 3, l2 - 3);
 					if (sprite != null)
 						if (class9_1.drawsTransparent) {
 							sprite.drawSprite1(k2, l2);
@@ -8886,16 +8886,16 @@ public class Client extends RSApplet {
 		if (anInt1055 == 1) {
 			multiOverlay.drawSprite(frameMode == ScreenMode.FIXED ? 472 : frameWidth - 85, frameMode == ScreenMode.FIXED ? 296 : 186);
 		}
-		if(fpsOn) {
+		if (fpsOn) {
 			int textColour = 0xffff00;
-			if(super.fps < 15) {
+			if (super.fps < 15) {
 				textColour = 0xff0000;
 			}
 			regularText.method385(textColour, "Fps: " + super.fps, 45, frameMode == ScreenMode.FIXED ? 470 : frameWidth - 265);
 			Runtime runtime = Runtime.getRuntime();
-			int memUsage = (int)((runtime.totalMemory() - runtime.freeMemory()) / 1024L);
+			int memUsage = (int) ((runtime.totalMemory() - runtime.freeMemory()) / 1024L);
 			textColour = 0xffff00;
-			if(memUsage > 0x2000000 && lowMem) {
+			if (memUsage > 0x2000000 && lowMem) {
 				textColour = 0xff0000;
 			}
 			regularText.method385(textColour, "Mem: " + memUsage + "k", 60, frameMode == ScreenMode.FIXED ? 428 : frameWidth - 265);
@@ -8903,10 +8903,10 @@ public class Client extends RSApplet {
 		int x = baseX + (myPlayer.x - 6 >> 7);
 		int y = baseY + (myPlayer.y - 6 >> 7);
 		final String screenMode = frameMode == ScreenMode.FIXED ? "Fixed" : "Resizable";
-		if (clientData){	
+		if (clientData) {
 			int textColour = 0xffff00;
 			int fpsColour = 0xffff00;
-			if(super.fps < 15) {
+			if (super.fps < 15) {
 				fpsColour = 0xff0000;
 			}
 			regularText.method385(textColour, "frameWidth: " + (mouseX - frameWidth) + ", frameHeight: " + (mouseY - frameHeight), frameHeight - 271, 5);
@@ -8915,7 +8915,7 @@ public class Client extends RSApplet {
 			Runtime runtime = Runtime.getRuntime();
 			int clientMemory = (int) ((runtime.totalMemory() - runtime.freeMemory()) / 1024L);
 			regularText.method385(textColour, "Memory Usage: " + clientMemory + "k", frameHeight - 229, 5);
-			regularText.method385(textColour, "Mouse X: " + mouseX + ", Mouse Y: " + mouseY,frameHeight - 215, 5);
+			regularText.method385(textColour, "Mouse X: " + mouseX + ", Mouse Y: " + mouseY, frameHeight - 215, 5);
 			regularText.method385(textColour, "Coords: " + x + ", " + y, frameHeight - 201, 5);
 			regularText.method385(textColour, "Client Mode: " + screenMode + "", frameHeight - 187, 5);
 			regularText.method385(textColour, "Client Resolution: " + frameWidth + "x" + frameHeight, frameHeight - 173, 5);
@@ -9017,7 +9017,7 @@ public class Client extends RSApplet {
 		}
 		boxLength += 8;
 		int offset = 15 * menuActionRow + 21;
-		if(super.saveClickX > 0 && super.saveClickY > 0 && super.saveClickX < frameWidth && super.saveClickY < frameHeight) {
+		if (super.saveClickX > 0 && super.saveClickY > 0 && super.saveClickX < frameWidth && super.saveClickY < frameHeight) {
 			int xClick = super.saveClickX - boxLength / 2;
 			if (xClick + boxLength > frameWidth - 4) {
 				xClick = frameWidth - 4 - boxLength;
@@ -9390,7 +9390,7 @@ public class Client extends RSApplet {
 			s = s + "@whi@ / " + (menuActionRow - 2) + " more options";
 		boldText.method390(4, 0xffffff, s, loopCycle / 1000, 15);
 	}
-	
+
 	private void markMinimap(Sprite sprite, int x, int y) {
 		if (sprite == null) {
 			return;
@@ -9424,8 +9424,7 @@ public class Client extends RSApplet {
 				cacheSprite[44].drawSprite(frameWidth - 181, 0);
 				cacheSprite[45].drawSprite(frameWidth - 158, 7);
 			}
-			if (frameMode == ScreenMode.FIXED ? super.mouseX >= 517 && super.mouseX <= 545 && super.mouseY >= 45 && super.mouseY <= 70 :
-				super.mouseX >= frameWidth - 185 && super.mouseX <= frameWidth - 158 && super.mouseY >= 40 && super.mouseY <= 66 ) {
+			if (frameMode == ScreenMode.FIXED ? super.mouseX >= 517 && super.mouseX <= 545 && super.mouseY >= 45 && super.mouseY <= 70 : super.mouseX >= frameWidth - 185 && super.mouseX <= frameWidth - 158 && super.mouseY >= 40 && super.mouseY <= 66) {
 				cacheSprite[23].drawSprite(loadOrbs && frameMode == ScreenMode.FIXED ? 1 : frameWidth - 185, frameMode == ScreenMode.FIXED ? 46 : 41);
 			} else {
 				cacheSprite[22].drawSprite(loadOrbs && frameMode == ScreenMode.FIXED ? 1 : frameWidth - 185, frameMode == ScreenMode.FIXED ? 46 : 41);
@@ -9437,8 +9436,8 @@ public class Client extends RSApplet {
 					cacheSprite[27].drawARGBSprite(frameWidth - 25, 2, 165);
 				}
 			}
-			if (loadOrbs) 
-			loadAllOrbs(frameMode == ScreenMode.FIXED ? 0 : frameWidth - 217);
+			if (loadOrbs)
+				loadAllOrbs(frameMode == ScreenMode.FIXED ? 0 : frameWidth - 217);
 			compass.method352(33, minimapInt1, anIntArray1057, 256, anIntArray968, (frameMode == ScreenMode.FIXED ? 25 : 24), 4, (frameMode == ScreenMode.FIXED ? 29 : frameWidth - 176), 33, 25);
 			if (menuOpen) {
 				drawMenu(frameMode == ScreenMode.FIXED ? 516 : 0, 0);
@@ -9556,8 +9555,7 @@ public class Client extends RSApplet {
 			cacheSprite[44].drawSprite(frameWidth - 181, 0);
 		}
 		compass.method352(33, minimapInt1, anIntArray1057, 256, anIntArray968, (frameMode == ScreenMode.FIXED ? 25 : 24), 4, (frameMode == ScreenMode.FIXED ? 29 : frameWidth - 176), 33, 25);
-		if (frameMode == ScreenMode.FIXED ? super.mouseX >= 517 && super.mouseX <= 545 && super.mouseY >= 45 && super.mouseY <= 70 :
-			super.mouseX >= frameWidth - 185 && super.mouseX <= frameWidth - 158 && super.mouseY >= 40 && super.mouseY <= 66) {
+		if (frameMode == ScreenMode.FIXED ? super.mouseX >= 517 && super.mouseX <= 545 && super.mouseY >= 45 && super.mouseY <= 70 : super.mouseX >= frameWidth - 185 && super.mouseX <= frameWidth - 158 && super.mouseY >= 40 && super.mouseY <= 66) {
 			cacheSprite[23].drawSprite(loadOrbs && frameMode == ScreenMode.FIXED ? 1 : frameWidth - 185, frameMode == ScreenMode.FIXED ? 46 : 41);
 		} else {
 			cacheSprite[22].drawSprite(loadOrbs && frameMode == ScreenMode.FIXED ? 1 : frameWidth - 185, frameMode == ScreenMode.FIXED ? 46 : 41);
@@ -9569,7 +9567,7 @@ public class Client extends RSApplet {
 				cacheSprite[27].drawARGBSprite(frameWidth - 25, 2, 165);
 			}
 		}
-		if (loadOrbs )
+		if (loadOrbs)
 			loadAllOrbs(frameMode == ScreenMode.FIXED ? 0 : frameWidth - 217);
 		if (menuOpen) {
 			drawMenu(frameMode == ScreenMode.FIXED ? 516 : 0, 0);
@@ -10695,7 +10693,7 @@ public class Client extends RSApplet {
 				pktType = -1;
 				return true;
 
-				/* Clan chat packet */
+			/* Clan chat packet */
 			case 217:
 				try {
 					name = inStream.readString();
@@ -11738,8 +11736,7 @@ public class Client extends RSApplet {
 
 	private void processMinimapActions() {
 		final boolean fixed = frameMode == ScreenMode.FIXED;
-		if (fixed ? super.mouseX >= 542 && super.mouseX <= 579 && super.mouseY >= 2 && super.mouseY <= 38 : 
-			super.mouseX >= frameWidth - 180 && super.mouseX <= frameWidth - 139 && super.mouseY >= 0 && super.mouseY <= 40) {
+		if (fixed ? super.mouseX >= 542 && super.mouseX <= 579 && super.mouseY >= 2 && super.mouseY <= 38 : super.mouseX >= frameWidth - 180 && super.mouseX <= frameWidth - 139 && super.mouseY >= 0 && super.mouseY <= 40) {
 			menuActionName[1] = "Face North";
 			menuActionID[1] = 696;
 			menuActionRow = 2;
@@ -11782,62 +11779,60 @@ public class Client extends RSApplet {
 			menuActionRow = 2;
 		}
 	}
-	
+
 	private void drawSpecialOrb() {
-		if(loadOrbs) {
-		String value = RSInterface.interfaceCache[155].message;
-		int spec = Integer.parseInt(value);
-		if (specialHover) {
-			cacheSprite[56].drawSprite(frameMode == ScreenMode.FIXED ? 153 : frameWidth - 63, frameMode == ScreenMode.FIXED ? 131 : 150);
-		} else {
-			cacheSprite[42].drawSprite(frameMode == ScreenMode.FIXED ? 154 : frameWidth - 62, frameMode == ScreenMode.FIXED ? 132 : 151);
+		if (loadOrbs) {
+			String value = RSInterface.interfaceCache[155].message;
+			int spec = 0;// Integer.parseInt(value);
+			if (specialHover) {
+				cacheSprite[56].drawSprite(frameMode == ScreenMode.FIXED ? 153 : frameWidth - 63, frameMode == ScreenMode.FIXED ? 131 : 150);
+			} else {
+				cacheSprite[42].drawSprite(frameMode == ScreenMode.FIXED ? 154 : frameWidth - 62, frameMode == ScreenMode.FIXED ? 132 : 151);
+			}
+			cacheSprite[5].myHeight = (int) (spec * 27 / 100);
+			cacheSprite[5].drawSprite(frameMode == ScreenMode.FIXED ? 157 : frameWidth - 58, frameMode == ScreenMode.FIXED ? 135 : 155);
+			cacheSprite[14].drawSprite(frameMode == ScreenMode.FIXED ? 157 : frameWidth - 58, frameMode == ScreenMode.FIXED ? 135 : 155);
+			cacheSprite[55].drawSprite(frameMode == ScreenMode.FIXED ? 162 : frameWidth - 53, frameMode == ScreenMode.FIXED ? 140 : 160);
+			smallText.method382(getOrbTextColor(spec), frameMode == ScreenMode.FIXED ? 198 : frameWidth - 19, Integer.toString(spec), frameMode == ScreenMode.FIXED ? 158 : 177, true);
 		}
-		cacheSprite[5].myHeight = (int) (spec * 27 / 100);
-		cacheSprite[5].drawSprite(frameMode == ScreenMode.FIXED ? 157 : frameWidth - 58, frameMode == ScreenMode.FIXED ? 135 : 155);
-		cacheSprite[14].drawSprite(frameMode == ScreenMode.FIXED ? 157 : frameWidth - 58, frameMode == ScreenMode.FIXED ? 135 : 155);
-		cacheSprite[55].drawSprite(frameMode == ScreenMode.FIXED ? 162 : frameWidth - 53, frameMode == ScreenMode.FIXED ? 140 : 160);
-		smallText.method382(getOrbTextColor(spec), frameMode == ScreenMode.FIXED ? 198 : frameWidth - 19, Integer.toString(spec), frameMode == ScreenMode.FIXED ? 158 : 177, true);
 	}
-	}
+
 	public boolean isPoisoned, clickedQuickPrayers;
 
-	public final int[]
-		orbX = { 1, 9, 41 },
-		orbY = { 68, 105, 132 }, 
-		orbTextX = { 16, 25, 57 }, 
-		orbTextY = { 94, 131, 158 }, 
-		coloredOrbX = { 28, 36, 68 }, 
-		coloredOrbY = { 72, 109, 136 }, 
-		currentInterface = { 4016, 4012, 149 }, 
-		maximumInterface = { 4017, 4013, 149 },
-		orbIconX = { 34, 39, 75 }, 
-		orbIconY = { 78, 112, 140 };
+	public final int[] orbX = { 1, 9, 41 }, orbY = { 68, 105, 132 }, orbTextX = { 16, 25, 57 }, orbTextY = { 94, 131, 158 }, coloredOrbX = { 28, 36, 68 }, coloredOrbY = { 72, 109, 136 }, currentInterface = { 4016, 4012, 149 }, maximumInterface = { 4017, 4013, 149 }, orbIconX = { 34, 39, 75 },
+			orbIconY = { 78, 112, 140 };
 
 	private void loadAllOrbs(int xOffset) {
 		drawSpecialOrb();
-		int[] 
-			spriteID = { isPoisoned && hpHover ? 8 : 7, prayHover ? 8 : 7, runHover ? 8 : 7, sumActive && sumHover ? 8 : 7 }, 
-			coloredOrbSprite = { 0, clickedQuickPrayers ? 2 : 1, runClicked ? 4 : 3, sumActive ? 6 : 5 },
-			orbSprite = { 9, 10, (runClicked ? 12 : 11), 13 };
+		int[] spriteID = { isPoisoned && hpHover ? 8 : 7, prayHover ? 8 : 7, runHover ? 8 : 7, sumActive && sumHover ? 8 : 7 }, coloredOrbSprite = { 0, clickedQuickPrayers ? 2 : 1, runClicked ? 4 : 3, sumActive ? 6 : 5 }, orbSprite = { 9, 10, (runClicked ? 12 : 11), 13 };
 		String cEnergy = RSInterface.interfaceCache[149].message.replaceAll("%", "");
 		String hp = RSInterface.interfaceCache[4016].message.replaceAll("%", "");
-		int currentHP = Integer.parseInt(hp), currentEnergy = Integer.parseInt(cEnergy);
+		// int currentHP = Integer.parseInt(hp);
+		// int currentEnergy = Integer.parseInt(cEnergy);
+		int currentHP = 0;
+		int currentEnergy = 0;
 		for (int i = 0; i < 3; i++) {
 			String currentStats = RSInterface.interfaceCache[currentInterface[i]].message.replaceAll("%", ""), maxStats = RSInterface.interfaceCache[maximumInterface[i]].message.replaceAll("%", "");
-			int currentLevel = Integer.parseInt(currentStats), maxLevel = Integer.parseInt(maxStats), level = (int) (((double) currentLevel / (double) maxLevel) * 100D);
+			// int currentLevel = Integer.parseInt(currentStats);
+			// int maxLevel = Integer.parseInt(maxStats);
+			// int level = (int) (((double) currentLevel / (double) maxLevel) *
+			// 100D);
+			int level = 0;
 			cacheSprite[spriteID[i]].drawSprite(orbX[i] + xOffset, orbY[i]);
 			cacheSprite[coloredOrbSprite[i]].drawSprite(coloredOrbX[i] + xOffset, coloredOrbY[i]);
 			double percent = (i == 2 ? runEnergy ? currentEnergy / 100D : 100 : level / 100D), fillHp = 26 * percent, fillPrayer = 26 * percent, fillRun = 26 * percent;
-			double[] fill = { fillHp, fillPrayer, fillRun};
+			double[] fill = { fillHp, fillPrayer, fillRun };
 			int depleteFill = 26 - (int) fill[i];
 			cacheSprite[14].myHeight = depleteFill;
 			try {
 				cacheSprite[14].drawSprite(coloredOrbX[i] + xOffset, coloredOrbY[i]);
-			} catch (Exception e) { }
+			} catch (Exception e) {
+			}
 			cacheSprite[orbSprite[i]].drawSprite(orbIconX[i] + xOffset, orbIconY[i]);
-			smallText.method382(getOrbTextColor(i == 2 ? runEnergy ? currentEnergy : 100 : level), orbTextX[i] + xOffset, "" + (i == 2 ? runEnergy ? cEnergy : 100 : i == 0 && newDamage ? currentHP * 10 : RSInterface.interfaceCache[currentInterface[i]].message.replaceAll("%", "")), orbTextY[i], true);
-		}		
-		if(frameMode == ScreenMode.FIXED) {
+			smallText.method382(getOrbTextColor(i == 2 ? runEnergy ? currentEnergy : 100 : level), orbTextX[i] + xOffset, "" + (i == 2 ? runEnergy ? cEnergy : 100 : i == 0 && newDamage ? currentHP * 10 : RSInterface.interfaceCache[currentInterface[i]].message.replaceAll("%", "")), orbTextY[i],
+					true);
+		}
+		if (frameMode == ScreenMode.FIXED) {
 			cacheSprite[worldHover ? 54 : 53].drawSprite(202, 20);
 		} else {
 			cacheSprite[worldHover ? 52 : 51].drawSprite(frameWidth - 118, 154);
@@ -11845,6 +11840,7 @@ public class Client extends RSApplet {
 	}
 
 	public int digits = 0;
+
 	private void drawCounterOnScreen() {
 		int x = frameMode == ScreenMode.FIXED ? 500 : frameWidth - 200;
 		int y = frameMode == ScreenMode.FIXED ? 46 : 50;
@@ -12268,7 +12264,8 @@ public class Client extends RSApplet {
 	private int anInt999;
 	private ISAACRandomGen encryption;
 	private Sprite multiOverlay;
-	static final int[][] anIntArrayArray1003 = { { 6798, 107, 10283, 16, 4797, 7744, 5799, 4634, 33697, 22433, 2983, 54193 }, { 8741, 12, 64030, 43162, 7735, 8404, 1701, 38430, 24094, 10153, 56621, 4783, 1341, 16578, 35003, 25239 }, { 25238, 8742, 12, 64030, 43162, 7735, 8404, 1701, 38430, 24094, 10153, 56621, 4783, 1341, 16578, 35003 }, { 4626, 11146, 6439, 12, 4758, 10270 }, { 4550, 4537, 5681, 5673, 5790, 6806, 8076, 4574 } };
+	static final int[][] anIntArrayArray1003 = { { 6798, 107, 10283, 16, 4797, 7744, 5799, 4634, 33697, 22433, 2983, 54193 }, { 8741, 12, 64030, 43162, 7735, 8404, 1701, 38430, 24094, 10153, 56621, 4783, 1341, 16578, 35003, 25239 },
+			{ 25238, 8742, 12, 64030, 43162, 7735, 8404, 1701, 38430, 24094, 10153, 56621, 4783, 1341, 16578, 35003 }, { 4626, 11146, 6439, 12, 4758, 10270 }, { 4550, 4537, 5681, 5673, 5790, 6806, 8076, 4574 } };
 	private String amountOrNameInput;
 	private static int anInt1005;
 	private int daysSinceLastLogin;
@@ -12504,7 +12501,7 @@ public class Client extends RSApplet {
 	private TextDrawingArea regularText;
 	private TextDrawingArea boldText;
 	public RSFont newSmallFont, newRegularFont, newBoldFont;
-    public RSFont newFancyFont;
+	public RSFont newFancyFont;
 	private int anInt1275;
 	private int backDialogID;
 	private int anInt1278;
@@ -12550,7 +12547,7 @@ public class Client extends RSApplet {
 		super.fullGameScreen = new ImageProducer(765, 503);
 		welcomeScreenRaised = true;
 	}
-	
+
 	public void mouseWheelDragged(int i, int j) {
 		if (!mouseWheelDown) {
 			return;
