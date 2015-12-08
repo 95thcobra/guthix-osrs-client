@@ -3634,9 +3634,9 @@ public class Client extends RSApplet {
 		int k = menuActionCmd3[i];
 		int l = menuActionID[i];
 		int i1 = menuActionCmd1[i];
-		if (Configuration.DEBUG) {
+		/*if (Configuration.DEBUG) {
 			System.out.println("childId: " + l);
-		}
+		}*/
 		if (l >= 2000)
 			l -= 2000;
 		if (l == 851) {
@@ -11277,12 +11277,14 @@ public class Client extends RSApplet {
 				int j18 = inStream.readDWord();
 				int l21 = inStream.readUnsignedByte();
 				boolean flag5 = false;
-				for (int i28 = 0; i28 < 100; i28++) {
-					if (anIntArray1240[i28] != j18)
+				// Cheap fix PI private messaging.
+				/*for (int i28 = 0; i28 < 100; i28++) {
+					if (anIntArray1240[i28] != j18) {
+						System.out.println("checked: " + i28);
 						continue;
+					}
 					flag5 = true;
-
-				}
+				}*/
 				if (l21 <= 1) {
 					for (int l29 = 0; l29 < ignoreCount; l29++) {
 						if (ignoreListAsLongs[l29] != l5)
@@ -11841,7 +11843,8 @@ public class Client extends RSApplet {
 
 	public int digits = 0;
 
-	private void drawCounterOnScreen() {
+	private void drawCounterOnScreen() { // Display xp counter
+		
 		int x = frameMode == ScreenMode.FIXED ? 500 : frameWidth - 200;
 		int y = frameMode == ScreenMode.FIXED ? 46 : 50;
 		digits = xpCounter == 0 ? 1 : 1 + (int) Math.floor(Math.log10(xpCounter));
@@ -11857,6 +11860,7 @@ public class Client extends RSApplet {
 		if (expAdded != 0) {
 			a = smallText.getTextWidth("" + NumberFormat.getIntegerInstance().format(expAdded) + "xp");
 			smallText.method389(true, x - a + 12, 0xFFFFFD, "+" + NumberFormat.getIntegerInstance().format(expAdded), y + 5 - xpAddedPos);
+			//cacheSprite[#].drawSprite(x, y); // Draw a sprite like melee/str icon.
 			xpAddedPos++;
 			if (xpAddedPos >= 140) {
 				xpAddedPos = expAdded = 0;
