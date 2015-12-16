@@ -1,3 +1,9 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+
 // Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
 // Jad home page: http://www.kpdus.com/jad.html
 // Decompiler options: packimports(3) 
@@ -30,11 +36,13 @@ public final class ItemDef {
 	}
 
 	public static void unpackConfig(StreamLoader archive) {
-		
+
 		stream = new Stream(archive.getDataForName("obj.dat"));
 		Stream stream = new Stream(archive.getDataForName("obj.idx"));
-		//stream = new Stream(FileOperations.ReadFile(signlink.findcachedir()+ "obj.dat"));
-	//	Stream stream = new Stream(FileOperations.ReadFile(signlink.findcachedir()+ "obj.idx"));
+		// stream = new Stream(FileOperations.ReadFile(signlink.findcachedir()+
+		// "obj.dat"));
+		// Stream stream = new
+		// Stream(FileOperations.ReadFile(signlink.findcachedir()+ "obj.idx"));
 		totalItems = stream.readUnsignedWord() + 21;
 		streamIndices = new int[totalItems + 50000];
 		int i = 2;
@@ -44,9 +52,42 @@ public final class ItemDef {
 		}
 
 		cache = new ItemDef[10];
-		for (int k = 0; k < 10; k++)
+		for (int k = 0; k < 10; k++) {
 			cache[k] = new ItemDef();
+		}
 
+		//dumpStackable();
+		//dumpNoteable();
+	}
+
+	public static void dumpNoteable() {
+		final int MAX_ITEMS = 13222;
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter("notedump.txt"));
+			for (int j = 0; j < MAX_ITEMS; j++) {
+				ItemDef item = ItemDef.forID(j);
+				out.write("id" + j + "$" + item.name + "$" + ((item.certTemplateID == -1 && !item.stackable) ? true : false));
+				out.newLine();
+			}
+			out.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
+
+	public static void dumpStackable() {
+		final int MAX_ITEMS = 13222;
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter("stackdump.txt"));
+			for (int j = 0; j < MAX_ITEMS; j++) {
+				ItemDef item = ItemDef.forID(j);
+				out.write("id" + j + "$" + item.name + "$" + (item.stackable ? "true" : "false"));
+				out.newLine();
+			}
+			out.close();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 
 	public Model method194(int j) {
@@ -61,13 +102,14 @@ public final class ItemDef {
 		Model model = Model.method462(k);
 		if (l != -1) {
 			Model model_1 = Model.method462(l);
-			Model aclass30_sub2_sub4_sub6s[] = { model, model_1 };
+			Model aclass30_sub2_sub4_sub6s[] = {
+					model,
+					model_1 };
 			model = new Model(2, aclass30_sub2_sub4_sub6s);
 		}
 		if (modifiedModelColors != null) {
 			for (int i1 = 0; i1 < modifiedModelColors.length; i1++)
-				model.method476(modifiedModelColors[i1],
-						originalModelColors[i1]);
+				model.method476(modifiedModelColors[i1], originalModelColors[i1]);
 
 		}
 		return model;
@@ -110,11 +152,16 @@ public final class ItemDef {
 			if (l != -1) {
 				Model model_1 = Model.method462(k);
 				Model model_3 = Model.method462(l);
-				Model aclass30_sub2_sub4_sub6_1s[] = { model, model_1, model_3 };
+				Model aclass30_sub2_sub4_sub6_1s[] = {
+						model,
+						model_1,
+						model_3 };
 				model = new Model(3, aclass30_sub2_sub4_sub6_1s);
 			} else {
 				Model model_2 = Model.method462(k);
-				Model aclass30_sub2_sub4_sub6s[] = { model, model_2 };
+				Model aclass30_sub2_sub4_sub6s[] = {
+						model,
+						model_2 };
 				model = new Model(2, aclass30_sub2_sub4_sub6s);
 			}
 		if (i == 0 && aByte205 != 0)
@@ -123,8 +170,7 @@ public final class ItemDef {
 			model.method475(0, aByte154, 0);
 		if (modifiedModelColors != null) {
 			for (int i1 = 0; i1 < modifiedModelColors.length; i1++)
-				model.method476(modifiedModelColors[i1],
-						originalModelColors[i1]);
+				model.method476(modifiedModelColors[i1], originalModelColors[i1]);
 
 		}
 		return model;
@@ -221,7 +267,7 @@ public final class ItemDef {
 		if (k == 0) {
 			Sprite sprite = (Sprite) mruNodes1.insertFromCache(i);
 			if (sprite != null && sprite.anInt1445 != j && sprite.anInt1445 != -1) {
-				
+
 				sprite.unlink();
 				sprite = null;
 			}
@@ -234,8 +280,7 @@ public final class ItemDef {
 		if (j > 1) {
 			int i1 = -1;
 			for (int j1 = 0; j1 < 10; j1++)
-				if (j >= itemDef.stackAmounts[j1]
-						&& itemDef.stackAmounts[j1] != 0)
+				if (j >= itemDef.stackAmounts[j1] && itemDef.stackAmounts[j1] != 0)
 					i1 = itemDef.stackIDs[j1];
 
 			if (i1 != -1)
@@ -272,24 +317,17 @@ public final class ItemDef {
 			k3 = (int) ((double) k3 * 1.04D);
 		int l3 = Texture.anIntArray1470[itemDef.modelRotationY] * k3 >> 16;
 		int i4 = Texture.anIntArray1471[itemDef.modelRotationY] * k3 >> 16;
-		model.method482(itemDef.modelRotationX, itemDef.anInt204,
-				itemDef.modelRotationY, itemDef.modelOffset1, l3
-						+ model.modelHeight / 2 + itemDef.modelOffset2, i4
-						+ itemDef.modelOffset2);
+		model.method482(itemDef.modelRotationX, itemDef.anInt204, itemDef.modelRotationY, itemDef.modelOffset1, l3 + model.modelHeight / 2 + itemDef.modelOffset2, i4 + itemDef.modelOffset2);
 		for (int i5 = 31; i5 >= 0; i5--) {
 			for (int j4 = 31; j4 >= 0; j4--)
 				if (enabledSprite.myPixels[i5 + j4 * 32] == 0)
-					if (i5 > 0
-							&& enabledSprite.myPixels[(i5 - 1) + j4 * 32] > 1)
+					if (i5 > 0 && enabledSprite.myPixels[(i5 - 1) + j4 * 32] > 1)
 						enabledSprite.myPixels[i5 + j4 * 32] = 1;
-					else if (j4 > 0
-							&& enabledSprite.myPixels[i5 + (j4 - 1) * 32] > 1)
+					else if (j4 > 0 && enabledSprite.myPixels[i5 + (j4 - 1) * 32] > 1)
 						enabledSprite.myPixels[i5 + j4 * 32] = 1;
-					else if (i5 < 31
-							&& enabledSprite.myPixels[i5 + 1 + j4 * 32] > 1)
+					else if (i5 < 31 && enabledSprite.myPixels[i5 + 1 + j4 * 32] > 1)
 						enabledSprite.myPixels[i5 + j4 * 32] = 1;
-					else if (j4 < 31
-							&& enabledSprite.myPixels[i5 + (j4 + 1) * 32] > 1)
+					else if (j4 < 31 && enabledSprite.myPixels[i5 + (j4 + 1) * 32] > 1)
 						enabledSprite.myPixels[i5 + j4 * 32] = 1;
 
 		}
@@ -298,17 +336,13 @@ public final class ItemDef {
 			for (int j5 = 31; j5 >= 0; j5--) {
 				for (int k4 = 31; k4 >= 0; k4--)
 					if (enabledSprite.myPixels[j5 + k4 * 32] == 0)
-						if (j5 > 0
-								&& enabledSprite.myPixels[(j5 - 1) + k4 * 32] == 1)
+						if (j5 > 0 && enabledSprite.myPixels[(j5 - 1) + k4 * 32] == 1)
 							enabledSprite.myPixels[j5 + k4 * 32] = k;
-						else if (k4 > 0
-								&& enabledSprite.myPixels[j5 + (k4 - 1) * 32] == 1)
+						else if (k4 > 0 && enabledSprite.myPixels[j5 + (k4 - 1) * 32] == 1)
 							enabledSprite.myPixels[j5 + k4 * 32] = k;
-						else if (j5 < 31
-								&& enabledSprite.myPixels[j5 + 1 + k4 * 32] == 1)
+						else if (j5 < 31 && enabledSprite.myPixels[j5 + 1 + k4 * 32] == 1)
 							enabledSprite.myPixels[j5 + k4 * 32] = k;
-						else if (k4 < 31
-								&& enabledSprite.myPixels[j5 + (k4 + 1) * 32] == 1)
+						else if (k4 < 31 && enabledSprite.myPixels[j5 + (k4 + 1) * 32] == 1)
 							enabledSprite.myPixels[j5 + k4 * 32] = k;
 
 			}
@@ -316,10 +350,7 @@ public final class ItemDef {
 		} else if (k == 0) {
 			for (int k5 = 31; k5 >= 0; k5--) {
 				for (int l4 = 31; l4 >= 0; l4--)
-					if (enabledSprite.myPixels[k5 + l4 * 32] == 0
-							&& k5 > 0
-							&& l4 > 0
-							&& enabledSprite.myPixels[(k5 - 1) + (l4 - 1) * 32] > 0)
+					if (enabledSprite.myPixels[k5 + l4 * 32] == 0 && k5 > 0 && l4 > 0 && enabledSprite.myPixels[(k5 - 1) + (l4 - 1) * 32] > 0)
 						enabledSprite.myPixels[k5 + l4 * 32] = 0x302020;
 
 			}
@@ -482,9 +513,9 @@ public final class ItemDef {
 				certTemplateID = stream.readUnsignedWord();
 			else if (i == 100) {
 				int length = stream.readUnsignedByte();
-				stackIDs = new int [length];
+				stackIDs = new int[length];
 				stackAmounts = new int[length];
-				for (int i2 = 0; i2< length; i2++) {
+				for (int i2 = 0; i2 < length; i2++) {
 					stackIDs[i2] = stream.readUnsignedWord();
 					stackAmounts[i2] = stream.readUnsignedWord();
 				}
